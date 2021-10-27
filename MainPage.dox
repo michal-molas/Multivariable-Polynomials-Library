@@ -1,0 +1,86 @@
+/**
+@mainpage Dokumentacja zadania wielomiany
+
+### Opis programu
+
+Tegoroczne duże zadanie polega na zaimplementowaniu operacji na wielomianach
+rzadkich wielu zmiennych.
+
+### Podstawowe operacje
+
+Podstawowe dostępne operacje w poly.h to:
+ - dodawanie: ::PolyAdd
+ - odejmowanie: ::PolySub
+ - mnożenie: ::PolyMul
+ - negacja: ::PolyNeg
+ - stopień wielomianu ze względu na zmienną: ::PolyDegBy
+ - maksymalny stopień wielomianu: ::PolyDeg
+ - sprawdzanie równości wielomianów: ::PolyIsEq
+ - wartość wielomianu od zmiennej: ::PolyAt
+ - stworzenie wielomianu z tablicy jednomianów: ::PolyAddMonos
+ - głęboka kopia wielomianu: ::PolyClone
+ - usunięcie wielomianu: ::PolyDestroy
+ - składanie wielomianów: ::PolyCompose
+
+Żadna z tych operacji nie modyfikuje przekazywanych wielomianów.
+
+### Biblioteka działań na wielomianach
+
+Poza podstawowymi funkcjami dostępnymi w poly.h, dostępne są również pomocnicze funkcje zawarte w poly_lib.h. \n 
+Wśród nich są między innymi funkcje wykonujące te same działania co wybrane funkcje z poly.h, \n 
+ale nadpisujące jeden z przekazywanych wielomianów.
+
+### Jak używać?
+
+Przykładowe użycie jest zaprezentowane w poly_example.c.\n 
+Można użyć funkcji z tego pliku, w szczególności makr P oraz C.\n
+Makro C tworzy wielomian typu coeff o podanym współczynniku.\n
+Makro P bierze kolejno pary argumentów, wielomian (np. C lub P) oraz wykładnik i tworzy z nich taki wielomian.\n
+Np. P(C(2), 3, P(C(4), 5, C(8), 9), 6) daje wielomian @f$ 2x_0^3 + (4x_1^5 + 8x_1^9)x_0^6 @f$
+
+Można również napisać własne funkcje, które będą tworzyć tablicę ::Mono, a następnie tworzyć wielomian funkcją ::PolyAddMonos.\n
+UWAGA: Należy samodzielnie zwolnić tę tablicę, ponieważ ::PolyAddMonos przejmuje na własność zawartość tablicy, a nie samą tablicę.\n 
+
+Nie powinno się tworzyć wielomianu inaczej niż funkcjami ::PolyAddMonos oraz ::PolyFromCoeff (bezpośrednio lub pośrednio),
+chyba że wie się co robi i na własną odpowiedzialność.
+
+### Zastosowana implementacja
+
+Jednomiany w wielomianie są przechowywane w dynamicznej tablicy, z zapasowym miejscem zwiększanym dwukrotnie w razie potrzeby.
+Pozwala to usprawnić m.in. proces usuwania jednomianów zerowych bez zbędnych alokacji, 
+przez co minimalizuje liczbę potrzebnych alokacji. Wielomiany podczas tworzenia zawsze ulegają uproszczeniu 
+(szczegóły w dokumentacji funkcji ::PolySimplify), przez co jak napisane wyżej, należy być ostrożnym z samodzielnym tworzeniem wielomianów.
+Wszystkie funkcje napisane są tak, by zminimalizować liczbę potrzebnych alokacji, przy zachowaniu czytelności kodu.
+
+Większość algorytmów działań na wielomianach jest liniowa po wszystkich jednomianach obydwu wielomianów. 
+Wyjątkiem jest kwadratowe ::PolyMul.
+
+### Kalkulator wielomianów
+Dostępny jest również kalkulator wielomianów czytający dane ze standardowego wejścia, działający na zasadzie stosu.
+Dostępne operacje to:
+- ZERO
+- IS_COEFF
+- IS_ZERO
+- IS_EQ
+- ADD
+- SUB
+- MUL
+- NEG
+- AT
+- DEG
+- DEG_BY [indeks zmiennej]
+- AT [wartość podstawianej zmiennej]
+- CLONE
+- POP
+- PRINT
+- COMPOSE [liczba składanych wielomianów]
+
+Nazwy sugerują co robią poszczególne instrukcje, jednak szczegóły działania opisane są w dokumentacji calc.h.
+Aby dodać wielomian na stos należy go wpisać w następującej formie (bez żadnych spacji)
+- wielomian: jednomian+jednomian+...+jednomian LUB współczynnik
+- jednomian: (wielomian,wykładnik)
+
+W przypadku błędnego polecenia lub niepoprawnych danych ukaże się informacja o błędzie.
+
+Kalkulator uruchamiany jest przez funkcję main w pliku calc.c.
+*/
