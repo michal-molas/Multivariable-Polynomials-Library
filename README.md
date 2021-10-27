@@ -34,7 +34,7 @@ The example of usage is shown in poly_example.c.
 I recommend using macros P and C from that file.
 The C macro creates a polynomial that is a number.
 The P macro takes pairs of arguments - polynomial (eg. C or P) and an exponent and makes a polynomial from them.
-Eg. P(C(2), 3, P(C(4), 5, C(8), 9), 6) returns such polynomial: 2x_0^3 + (4x_1^5 + 8x_1^9) x_0^6.
+Eg. P(C(2), 3, P(C(4), 5, C(8), 9), 6) returns such polynomial: 2*(x_0)^3 + (4*(x_1)^5 + 8*(x_1)^9)*(x_0)^6.
 
 WARNINGS: 
 - The polynomial should not be created differently than with functions PolyAddMonos and PolyFromCoeff, as it is very likely to cause memory problems if done improperly. 
